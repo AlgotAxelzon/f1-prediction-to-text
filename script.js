@@ -13,7 +13,6 @@ fetch('http://test.axelzon.com/data/lastResults.json')
     base = data.drivers;
     randomized = data.drivers;
     array = data.drivers.slice();
-
     renderItems(src_data.drivers);
   });
 
@@ -105,4 +104,19 @@ const setDragging = (e) => {
 function copyToClipboard() {
   raw_text.select();
   document.execCommand("copy");
+}
+
+
+function resetOrder() {
+
+  base.sort(function(a, b) {
+    var keyA = parseInt(a.grid.position),
+      keyB = parseInt(b.grid.position);
+    if (keyA < keyB) return -1;
+    if (keyA > keyB) return 1;
+    return 0;
+  });
+
+  randomized = base;
+  renderItems(base);
 }
