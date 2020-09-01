@@ -1,12 +1,9 @@
 
 // Variables and initializations
 
-var src_data;
-
-var list = document.getElementById('list')
-var base, randomized, dragging, draggedOver;
-var isRight = 'Not In Order!';
-
+var list = document.getElementById('list');
+var raw_text = document.getElementById("raw_text");
+var src_data, base, randomized, dragging, draggedOver;
 
 
 fetch('http://test.axelzon.com/data/lastResults.json')
@@ -16,25 +13,17 @@ fetch('http://test.axelzon.com/data/lastResults.json')
     base = data.drivers;
     randomized = data.drivers;
     array = data.drivers.slice();
-    list = document.querySelector(".list");
-    raw_text = document.getElementById("raw_text");
-    /*NewTrackplate(data.info, ".lastRaceResults");
-    for (let i = 0; i < data.drivers.length; i++) {
-      let e = data.drivers[i];
-      NewNameplate(e, ".lastRaceResults");
-    }*/
+
     renderItems(src_data.drivers);
   });
 
 
-
-
+// Functions
 
 const renderItems = (data) => {
   list.innerText = '';
   raw_text.innerHTML = '';
   for (let i = 0; i < data.length; i++) {
-    /*data.forEach(item => {*/
 
     var item = data[i];
 
@@ -77,18 +66,17 @@ const renderItems = (data) => {
     ident.appendChild(abbr);
     a.appendChild(ident);
 
-
-    a.draggable = true
-    a.addEventListener('drag', setDragging)
-    a.addEventListener('dragover', setDraggedOver)
-    a.addEventListener('drop', compare)
+    a.draggable = true;
+    a.addEventListener('drag', setDragging);
+    a.addEventListener('dragover', setDraggedOver);
+    a.addEventListener('drop', compare);
 
     list.appendChild(a);
 
     FixGridWidth();
-
-  }//)
+  }
 }
+
 
 const compare = (e) => {
   var index1 = dragging - 1;
@@ -97,25 +85,20 @@ const compare = (e) => {
   randomized.splice(index1, 1);
   randomized.splice(index2, 0, temp);
 
-  renderItems(randomized)
+  renderItems(randomized);
 };
 
 
 const setDraggedOver = (e) => {
   e.preventDefault();
-  //console.log(e.target.closest("div.f1").children[0].children[0].innerText)
-  //draggedOver = Number.isNaN(parseInt(e.target.innerText)) ? e.target.innerText : parseInt(e.target.innerText)
-
-  draggedOver = Number.isNaN(parseInt(e.target.closest("div.f1").children[0].children[0].innerText)) ? e.target.closest("div.f1").children[0].children[0].innerText : parseInt(e.target.closest("div.f1").children[0].children[0].innerText)
-
-  //console.log(draggedOver);
+  var targetIndex = e.target.closest("div.f1").children[0].children[0].innerText;
+  draggedOver = Number.isNaN(parseInt(targetIndex)) ? targetIndex : parseInt(targetIndex);
 }
 
-const setDragging = (e) => {
-  //dragging = Number.isNaN(parseInt(e.target.innerText)) ? e.target.innerText : parseInt(e.target.innerText)
-  dragging = Number.isNaN(parseInt(e.target.closest("div.f1").children[0].children[0].innerText)) ? e.target.closest("div.f1").children[0].children[0].innerText : parseInt(e.target.closest("div.f1").children[0].children[0].innerText)
 
-  //console.log(dragging);
+const setDragging = (e) => {
+  var targetIndex = e.target.closest("div.f1").children[0].children[0].innerText;
+  dragging = Number.isNaN(parseInt(targetIndex)) ? targetIndex : parseInt(targetIndex);
 }
 
 
